@@ -18,7 +18,7 @@
 - [x] See details of permafeeds including Statistics and ArQL/GraphQL example
 - [x] Run ArQL test query
 - [x] Comment on permafeed
-- [] Run GraphQL test query
+- [ ] Run GraphQL test query
 
 ## Dependencies
 
