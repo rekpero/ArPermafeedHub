@@ -1,6 +1,6 @@
 # Ar Permafeed Hub
 
-<img src="https://github.com/mmitrasish/arweave-neighbour-tweet-react/blob/master/public/logo.png" width="100" height="100">
+<img src="https://github.com/mmitrasish/ArPermafeedHub/blob/master/public/logo.png" width="100" height="100">
 
 **Ar Permafeed Hub** is an permaweb app that indexes permafeeds on [Arweave](https://www.arweave.org/). Here you can browse feeds, reading the details provided about them by their owners as well as details extracted from the blockweave and also list your permafeeds easily from your wallet.
 
