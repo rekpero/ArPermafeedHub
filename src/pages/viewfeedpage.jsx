@@ -5,6 +5,9 @@ import ApiService from "../services/api";
 import SendTipModal from "../components/sendtipmodalcomponent";
 import FeedDetails from "../components/feeddetailscomponent";
 import FeedStatistics from "../components/feedstatisticscomponent";
+import TestQuery from "../components/testquerycomponent";
+import CommentFeed from "../components/commentfeedcomponent";
+import TipsFeed from "../components/feedtipscomponent";
 
 const ViewFeedPage = props => {
   const [feedItems, setFeedItems] = React.useState([]);
@@ -130,6 +133,9 @@ const ViewFeedPage = props => {
                 <li className={tab === 3 ? "is-active" : ""}>
                   <a onClick={e => changeTab(3)}>Comments</a>
                 </li>
+                <li className={tab === 4 ? "is-active" : ""}>
+                  <a onClick={e => changeTab(4)}>Tips</a>
+                </li>
               </ul>
             </div>
           </nav>
@@ -144,6 +150,9 @@ const ViewFeedPage = props => {
             loading={loading}
           />
         ) : null}
+        {tab === 2 ? <TestQuery feed={feed} /> : null}
+        {tab === 3 ? <CommentFeed wallet={props.wallet} feed={feed} /> : null}
+        {tab === 4 ? <TipsFeed feed={feed} /> : null}
       </div>
     </div>
   );

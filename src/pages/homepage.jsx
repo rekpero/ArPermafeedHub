@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import moment from "moment";
+import FeedCard from "../components/feedcardcomponent";
 
 const HomePage = props => {
   const viewFeed = txid => {
@@ -9,35 +9,63 @@ const HomePage = props => {
 
   return (
     <div className="container" style={{ marginTop: 18 }}>
+      <nav className="level">
+        <div className="level-left">
+          <span style={{ marginRight: 18 }}>
+            <strong>Search by Title: </strong>
+          </span>
+          <span>
+            <div className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="Search"
+                onChange={e => props.filterAllFeeds(e.target.value)}
+              />
+            </div>
+          </span>
+        </div>
+
+        <div className="level-right">
+          <div className="dropdown is-hoverable">
+            <div className="dropdown-trigger">
+              <button
+                className="button"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu4"
+              >
+                <span>Sort by</span>
+                <span className="icon is-small">
+                  <i className="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div className="dropdown-menu" id="dropdown-menu4" role="menu">
+              <div className="dropdown-content">
+                <a
+                  className="dropdown-item"
+                  onClick={e => props.sortAllFeeds("ranking")}
+                >
+                  Ranking
+                </a>
+                <a
+                  className="dropdown-item"
+                  onClick={e => props.sortAllFeeds("latest")}
+                >
+                  Latest
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
       {props.allFeeds.length === 0 ? (
         <h2 className="title is-4 has-text-centered">No Data To Show</h2>
       ) : (
         <div className="columns is-mobile is-centered">
           <div className="column is-half">
             {props.allFeeds.map((feed, i) => (
-              <div className="card" key={i} style={{ marginBottom: 18 }}>
-                <div className="card-content">
-                  <p className="title is-4">{feed.title}</p>
-                  <p className="subtitle is-6" style={{ marginBottom: 8 }}>
-                    {moment(feed.time).format("MMM Do YYYY, h:mm:ss a")}
-                  </p>
-                  <span
-                    className="tag is-primary has-text-weight-bold is-medium"
-                    style={{ marginBottom: 16 }}
-                  >
-                    {feed.address.substr(0, 4)}...{feed.address.substr(-4, 4)}
-                  </span>
-                  <p>{feed.description}</p>
-                </div>
-                <footer className="card-footer">
-                  <a
-                    className="card-footer-item"
-                    onClick={e => viewFeed(feed.txid)}
-                  >
-                    View
-                  </a>
-                </footer>
-              </div>
+              <FeedCard feed={feed} viewFeed={viewFeed} key={i} />
             ))}
           </div>
         </div>

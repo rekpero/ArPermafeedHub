@@ -20,7 +20,9 @@ class AppRouter extends React.Component {
           ? ""
           : sessionStorage.getItem("walletAddress"),
       allFeeds: [],
-      yourFeeds: []
+      filterAllFeeds: [],
+      yourFeeds: [],
+      filterYourFeeds: []
     };
   }
 
@@ -51,15 +53,54 @@ class AppRouter extends React.Component {
   getMyFeeds = () => {
     if (this.state.wallet !== null) {
       ApiService.getYourFeeds(this.state.walletAddress).then(data => {
-        this.setState({ yourFeeds: data });
+        this.setState({ yourFeeds: data, filterYourFeeds: data });
       });
     }
   };
 
   getAllFeeds = () => {
     ApiService.getAllFeeds().then(data => {
-      this.setState({ allFeeds: data });
+      this.setState({ allFeeds: data, filterAllFeeds: data });
+      console.log(data);
     });
+  };
+
+  sortAllFeeds = sortBy => {
+    const allFeeds = this.state.allFeeds;
+    if (sortBy === "ranking") {
+      const sortFeeds = allFeeds.sort((a, b) => a.rank - b.rank);
+      this.setState({ allFeeds: sortFeeds, filterAllFeeds: sortFeeds });
+    } else if (sortBy === "latest") {
+      const sortFeeds = allFeeds.sort((a, b) => b.time - a.time);
+      this.setState({ allFeeds: sortFeeds, filterAllFeeds: sortFeeds });
+    }
+  };
+
+  filterAllFeeds = filterBy => {
+    const allFeeds = this.state.allFeeds;
+    const filterFeeds = allFeeds.filter(
+      feed => feed.title.toLowerCase().indexOf(filterBy.toLowerCase()) !== -1
+    );
+    this.setState({ filterAllFeeds: filterFeeds });
+  };
+
+  sortYourFeeds = sortBy => {
+    const yourFeeds = this.state.yourFeeds;
+    if (sortBy === "ranking") {
+      const sortFeeds = yourFeeds.sort((a, b) => a.rank - b.rank);
+      this.setState({ yourFeeds: sortFeeds, filterYourFeeds: sortFeeds });
+    } else if (sortBy === "latest") {
+      const sortFeeds = yourFeeds.sort((a, b) => b.time - a.time);
+      this.setState({ yourFeeds: sortFeeds, filterYourFeeds: sortFeeds });
+    }
+  };
+
+  filterYourFeeds = filterBy => {
+    const yourFeeds = this.state.yourFeeds;
+    const filterFeeds = yourFeeds.filter(
+      feed => feed.title.toLowerCase().indexOf(filterBy.toLowerCase()) !== -1
+    );
+    this.setState({ filterYourFeeds: filterFeeds });
   };
 
   render() {
@@ -88,7 +129,9 @@ class AppRouter extends React.Component {
               <HomePage
                 wallet={this.state.wallet}
                 walletAddress={this.state.walletAddress}
-                allFeeds={this.state.allFeeds}
+                allFeeds={this.state.filterAllFeeds}
+                sortAllFeeds={this.sortAllFeeds}
+                filterAllFeeds={this.filterAllFeeds}
               />
             )}
           />
@@ -99,7 +142,9 @@ class AppRouter extends React.Component {
               <YourFeedsPage
                 wallet={this.state.wallet}
                 walletAddress={this.state.walletAddress}
-                yourFeeds={this.state.yourFeeds}
+                yourFeeds={this.state.filterYourFeeds}
+                sortYourFeeds={this.sortYourFeeds}
+                filterYourFeeds={this.filterYourFeeds}
               />
             )}
           />
