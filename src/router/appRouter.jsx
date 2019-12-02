@@ -122,9 +122,10 @@ class AppRouter extends React.Component {
               />
             )}
           />
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Route
             exact
-            path="/"
+            path="/home"
             render={() => (
               <HomePage
                 wallet={this.state.wallet}
