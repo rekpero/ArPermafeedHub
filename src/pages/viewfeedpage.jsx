@@ -18,9 +18,7 @@ const ViewFeedPage = props => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const feed = props.allFeeds.filter(
-      feed => feed.txid === props.match.params.id
-    )[0];
+    const feed = props.allFeeds.filter(feed => feed.txid === props.txid)[0];
     console.log(feed);
     if (feed !== undefined) {
       setFeed(feed);
@@ -157,4 +155,4 @@ const ViewFeedPage = props => {
     </div>
   );
 };
-export default withRouter(ViewFeedPage);
+export default ViewFeedPage;

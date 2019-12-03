@@ -19,9 +19,9 @@ const AppBar = props => {
       aria-label="main navigation"
     >
       <div className="navbar-brand">
-        <Link className="navbar-item" to="/">
+        <a className="navbar-item" onClick={e => props.setTab(0)}>
           <strong className="title">PermaHub</strong>
-        </Link>
+        </a>
 
         <a
           role="button"
@@ -42,15 +42,15 @@ const AppBar = props => {
         className={"navbar-menu " + (openNavBar ? "is-active" : null)}
       >
         <div className="navbar-start">
-          <Link className="navbar-item" to="/">
+          <a className="navbar-item" onClick={e => props.setTab(0)}>
             Home
-          </Link>
-          <Link className="navbar-item" to="/my-feed">
+          </a>
+          <a className="navbar-item" onClick={e => props.setTab(1)}>
             My Feeds
-          </Link>
-          <Link className="navbar-item" to="/add-feed">
+          </a>
+          <a className="navbar-item" onClick={e => props.setTab(2)}>
             Add Feeds
-          </Link>
+          </a>
         </div>
 
         <div className="navbar-end">

@@ -22,7 +22,9 @@ class AppRouter extends React.Component {
       allFeeds: [],
       filterAllFeeds: [],
       yourFeeds: [],
-      filterYourFeeds: []
+      filterYourFeeds: [],
+      tab: 0,
+      txid: ""
     };
   }
 
@@ -103,65 +105,59 @@ class AppRouter extends React.Component {
     this.setState({ filterYourFeeds: filterFeeds });
   };
 
+  setTab = tab => {
+    this.setState({ tab });
+  };
+  setTxId = txid => {
+    this.setState({ txid });
+  };
+
   render() {
     return (
-      <Router>
-        <App
-          wallet={this.state.wallet}
-          walletAddress={this.state.walletAddress}
-          setWallet={this.setWallet}
-          logout={this.logout}
-        >
-          <Route
-            exact
-            path="/add-feed"
-            render={() => (
-              <AddFeedPage
-                wallet={this.state.wallet}
-                walletAddress={this.state.walletAddress}
-              />
-            )}
+      <App
+        wallet={this.state.wallet}
+        walletAddress={this.state.walletAddress}
+        setWallet={this.setWallet}
+        logout={this.logout}
+        setTab={this.setTab}
+      >
+        {this.state.tab === 0 ? (
+          <HomePage
+            wallet={this.state.wallet}
+            walletAddress={this.state.walletAddress}
+            allFeeds={this.state.filterAllFeeds}
+            sortAllFeeds={this.sortAllFeeds}
+            filterAllFeeds={this.filterAllFeeds}
+            setTab={this.setTab}
+            setTxId={this.setTxId}
           />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
-          <Route
-            exact
-            path="/home"
-            render={() => (
-              <HomePage
-                wallet={this.state.wallet}
-                walletAddress={this.state.walletAddress}
-                allFeeds={this.state.filterAllFeeds}
-                sortAllFeeds={this.sortAllFeeds}
-                filterAllFeeds={this.filterAllFeeds}
-              />
-            )}
+        ) : null}
+        {this.state.tab === 1 ? (
+          <YourFeedsPage
+            wallet={this.state.wallet}
+            walletAddress={this.state.walletAddress}
+            yourFeeds={this.state.filterYourFeeds}
+            sortYourFeeds={this.sortYourFeeds}
+            filterYourFeeds={this.filterYourFeeds}
+            setTab={this.setTab}
+            setTxId={this.setTxId}
           />
-          <Route
-            exact
-            path="/my-feed"
-            render={() => (
-              <YourFeedsPage
-                wallet={this.state.wallet}
-                walletAddress={this.state.walletAddress}
-                yourFeeds={this.state.filterYourFeeds}
-                sortYourFeeds={this.sortYourFeeds}
-                filterYourFeeds={this.filterYourFeeds}
-              />
-            )}
+        ) : null}
+        {this.state.tab === 2 ? (
+          <AddFeedPage
+            wallet={this.state.wallet}
+            walletAddress={this.state.walletAddress}
           />
-          <Route
-            exact
-            path="/feeds/:id"
-            render={() => (
-              <ViewFeedPage
-                wallet={this.state.wallet}
-                walletAddress={this.state.walletAddress}
-                allFeeds={this.state.allFeeds}
-              />
-            )}
+        ) : null}
+        {this.state.tab === 3 ? (
+          <ViewFeedPage
+            wallet={this.state.wallet}
+            walletAddress={this.state.walletAddress}
+            allFeeds={this.state.allFeeds}
+            txid={this.state.txid}
           />
-        </App>
-      </Router>
+        ) : null}
+      </App>
     );
   }
 }

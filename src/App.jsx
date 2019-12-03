@@ -10,6 +10,7 @@ function App(props) {
         wallet={props.wallet}
         walletAddress={props.walletAddress}
         logout={props.logout}
+        setTab={props.setTab}
       />
       {props.children}
     </div>

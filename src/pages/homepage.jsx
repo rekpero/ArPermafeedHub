@@ -4,7 +4,8 @@ import FeedCard from "../components/feedcardcomponent";
 
 const HomePage = props => {
   const viewFeed = txid => {
-    props.history.push(`/feeds/${txid}`);
+    props.setTxId(txid);
+    props.setTab(3);
   };
 
   return (
@@ -74,4 +75,4 @@ const HomePage = props => {
   );
 };
 
-export default withRouter(HomePage);
+export default HomePage;

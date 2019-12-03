@@ -1,11 +1,11 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import moment from "moment";
 import FeedCard from "../components/feedcardcomponent";
 
 const YourFeedPage = props => {
   const viewFeed = txid => {
-    props.history.push(`/feeds/${txid}`);
+    // props.history.push(`/feeds/${txid}`);
+    props.setTxId(txid);
+    props.setTab(3);
   };
 
   return (
@@ -75,4 +75,4 @@ const YourFeedPage = props => {
   );
 };
 
-export default withRouter(YourFeedPage);
+export default YourFeedPage;
