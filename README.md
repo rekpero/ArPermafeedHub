@@ -25,7 +25,6 @@
 ## Dependencies
 
 1. React v16.10.2
-1. React Router Dom v5.1.2
 1. Arweave v1.4.1
 1. Bulma v0.8.0
 1. Moment v2.24.0

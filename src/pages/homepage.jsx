@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import FeedCard from "../components/feedcardcomponent";
 
 const HomePage = props => {

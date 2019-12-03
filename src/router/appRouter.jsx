@@ -1,5 +1,4 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import App from "../App";
 import ApiService from "../services/api";
 import AddFeedPage from "../pages/addfeedspage";

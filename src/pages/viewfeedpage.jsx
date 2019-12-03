@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import moment from "moment";
 import ApiService from "../services/api";
 import SendTipModal from "../components/sendtipmodalcomponent";
