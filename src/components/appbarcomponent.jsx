@@ -41,13 +41,22 @@ const AppBar = props => {
         className={"navbar-menu " + (openNavBar ? "is-active" : null)}
       >
         <div className="navbar-start">
-          <a className="navbar-item" onClick={e => props.setTab(0)}>
+          <a
+            className={"navbar-item " + (props.tab === 0 ? "is-active" : null)}
+            onClick={e => props.setTab(0)}
+          >
             Home
           </a>
-          <a className="navbar-item" onClick={e => props.setTab(1)}>
+          <a
+            className={"navbar-item " + (props.tab === 1 ? "is-active" : null)}
+            onClick={e => props.setTab(1)}
+          >
             My Feeds
           </a>
-          <a className="navbar-item" onClick={e => props.setTab(2)}>
+          <a
+            className={"navbar-item " + (props.tab === 2 ? "is-active" : null)}
+            onClick={e => props.setTab(2)}
+          >
             Add Feeds
           </a>
         </div>

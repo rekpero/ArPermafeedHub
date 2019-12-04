@@ -50,16 +50,19 @@ class AddFeedPage extends React.Component {
   };
 
   submitFeeds = () => {
+    const example = this.state.example;
+    const unempEx = example.filter(
+      ex => ex.code !== "" && ex.description !== ""
+    );
     const feed = {
       address: this.state.address,
       tagExpr1: this.state.tag1,
       tagExpr2: this.state.tag2,
       title: this.state.title,
       description: this.state.description,
-      example: this.state.example
+      example: unempEx
     };
 
-    console.log(feed);
     ApiService.postFeed(feed, this.props.wallet).then(data =>
       console.log(data)
     );

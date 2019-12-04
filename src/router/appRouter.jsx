@@ -119,6 +119,7 @@ class AppRouter extends React.Component {
         setWallet={this.setWallet}
         logout={this.logout}
         setTab={this.setTab}
+        tab={this.state.tab}
       >
         {this.state.tab === 0 ? (
           <HomePage
