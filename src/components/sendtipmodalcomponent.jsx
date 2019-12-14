@@ -1,5 +1,6 @@
 import React from "react";
 import ApiService from "../services/api";
+import { toast } from "bulma-toast";
 
 const SendTipModal = props => {
   const [amount, setAmount] = React.useState(0);
@@ -7,8 +8,32 @@ const SendTipModal = props => {
   const sendTip = () => {
     console.log(props.sendToAddress, amount, props.wallet, props.txId);
     ApiService.sendTip(props.sendToAddress, amount, props.wallet, props.txId)
-      .then(data => console.log(data))
-      .catch(err => console.error(err));
+      .then(data => {
+        console.log(data);
+        props.closeSendTipModal();
+        toast({
+          message: "Tip sent, wait for it to be mined",
+          type: "is-success",
+          duration: 3000,
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          animate: { in: "fadeIn", out: "fadeOut" }
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        props.closeSendTipModal();
+        toast({
+          message: "Error in sending tip",
+          type: "is-danger",
+          duration: 3000,
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          animate: { in: "fadeIn", out: "fadeOut" }
+        });
+      });
   };
 
   return (

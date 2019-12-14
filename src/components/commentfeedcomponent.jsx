@@ -1,19 +1,39 @@
 import React from "react";
 import ApiService from "../services/api";
 import moment from "moment";
+import { toast } from "bulma-toast";
 
 const CommentFeed = props => {
   const [comment, setComment] = React.useState("");
   const [isRun, setRun] = React.useState(false);
   const postComment = () => {
     setRun(true);
-    ApiService.commentFeed({ comment }, props.wallet, props.feed.txid).then(
-      data => {
+    ApiService.commentFeed({ comment }, props.wallet, props.feed.txid)
+      .then(data => {
         setComment("");
         setRun(false);
         console.log(data);
-      }
-    );
+        toast({
+          message: "Comment posted, wait for it to be mined",
+          type: "is-success",
+          duration: 3000,
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          animate: { in: "fadeIn", out: "fadeOut" }
+        });
+      })
+      .catch(err => {
+        toast({
+          message: "Error in commenting",
+          type: "is-danger",
+          duration: 3000,
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          animate: { in: "fadeIn", out: "fadeOut" }
+        });
+      });
   };
   return (
     <div>
@@ -48,7 +68,9 @@ const CommentFeed = props => {
           <div className="has-text-right">
             <button
               className="button is-link"
-              disabled={props.feed === undefined || isRun}
+              disabled={
+                props.feed === undefined || isRun || props.wallet === null
+              }
               onClick={postComment}
             >
               <span className="icon">

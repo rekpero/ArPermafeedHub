@@ -1,5 +1,6 @@
 import React from "react";
 import ApiService from "../services/api";
+import { toast } from "bulma-toast";
 
 class AddFeedPage extends React.Component {
   constructor(props) {
@@ -63,9 +64,38 @@ class AddFeedPage extends React.Component {
       example: unempEx
     };
 
-    ApiService.postFeed(feed, this.props.wallet).then(data =>
-      console.log(data)
-    );
+    ApiService.postFeed(feed, this.props.wallet)
+      .then(data => {
+        console.log(data);
+        this.setState({
+          address: this.props.walletAddress,
+          tag1: "",
+          tag2: "",
+          title: "",
+          description: "",
+          example: [{ code: "", description: "" }]
+        });
+        toast({
+          message: "Permafeed posted, wait for it to be mined",
+          type: "is-success",
+          duration: 3000,
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          animate: { in: "fadeIn", out: "fadeOut" }
+        });
+      })
+      .catch(err => {
+        toast({
+          message: "Error in posting permafeed",
+          type: "is-danger",
+          duration: 3000,
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          animate: { in: "fadeIn", out: "fadeOut" }
+        });
+      });
   };
 
   render() {
