@@ -6,7 +6,7 @@
 
 ## Ar Neighbour Link
 
-- [**Permaweb**](https://arweave.net/onlhyQxaDkYzUcyva-XDiBb2DTbJhYFvJaiPCFrKzAs)
+- [**Permaweb**](https://arweave.net/avRy0EETH9r6axDYJpcGNYJ6j4pmXOjJKZp3fr1cTdM)
 - [**Heroku Demo**](https://ar-permafeed-hub.herokuapp.com/)
 
 ## Features
