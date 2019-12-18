@@ -11,7 +11,9 @@ function App(props) {
         walletAddress={props.walletAddress}
         logout={props.logout}
         tab={props.tab}
+        setTxId={props.setTxId}
         setTab={props.setTab}
+        notifications={props.notifications}
       />
       {props.children}
     </div>

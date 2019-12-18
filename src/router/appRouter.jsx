@@ -5,6 +5,7 @@ import AddFeedPage from "../pages/addfeedspage";
 import HomePage from "../pages/homepage";
 import ViewFeedPage from "../pages/viewfeedpage";
 import YourFeedsPage from "../pages/yourfeedspage";
+import { toast } from "bulma-toast";
 
 class AppRouter extends React.Component {
   constructor(props) {
@@ -23,7 +24,9 @@ class AppRouter extends React.Component {
       yourFeeds: [],
       filterYourFeeds: [],
       tab: 0,
-      txid: ""
+      txid: "",
+      addedTxId: [],
+      notifications: []
     };
   }
 
@@ -111,6 +114,52 @@ class AppRouter extends React.Component {
     this.setState({ txid });
   };
 
+  addTxId = txId => {
+    const { addedTxId } = this.state;
+    addedTxId.push(txId);
+    console.log(addedTxId);
+    this.setState({ addedTxId }, () => {
+      this.watchTxStatus();
+    });
+  };
+  watchTxStatus = () => {
+    clearInterval(this.txWatcher);
+    this.txWatcher = setInterval(() => {
+      const getStatus = async () => {
+        console.log(this.state.addedTxId);
+        const getTxStatus = await ApiService.getTxStatus(this.state.addedTxId);
+        getTxStatus.forEach((status, i) => {
+          if (status !== undefined) {
+            const { addedTxId } = this.state;
+            const txId = addedTxId.splice(i, 1);
+
+            this.setState({ addedTxId }, () => {
+              toast({
+                message: "Your Permafeed has been mined",
+                type: "is-success",
+                duration: 3000,
+                dismissible: true,
+                pauseOnHover: true,
+                closeOnClick: true,
+                animate: { in: "fadeIn", out: "fadeOut" }
+              });
+              const { notifications } = this.state;
+              notifications.push({ txId: txId[0] });
+              this.setState({ notifications });
+              this.getAllFeeds();
+              if (!this.state.addedTxId.length) {
+                clearInterval(this.txWatcher);
+              }
+            });
+          }
+        });
+        console.log(getTxStatus);
+      };
+
+      getStatus();
+    }, 5000);
+  };
+
   render() {
     return (
       <App
@@ -118,8 +167,10 @@ class AppRouter extends React.Component {
         walletAddress={this.state.walletAddress}
         setWallet={this.setWallet}
         logout={this.logout}
+        setTxId={this.setTxId}
         setTab={this.setTab}
         tab={this.state.tab}
+        notifications={this.state.notifications}
       >
         {this.state.tab === 0 ? (
           <HomePage
@@ -147,6 +198,7 @@ class AppRouter extends React.Component {
           <AddFeedPage
             wallet={this.state.wallet}
             walletAddress={this.state.walletAddress}
+            addTxId={this.addTxId}
           />
         ) : null}
         {this.state.tab === 3 ? (

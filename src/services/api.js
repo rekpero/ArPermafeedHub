@@ -1,8 +1,5 @@
 import arweave from "./arweave";
-import {
-  currentUnixTime,
-  getAppName
-} from "./utils";
+import { currentUnixTime, getAppName } from "./utils";
 
 class ApiService {
   getWalletAddress = wallet => {
@@ -17,13 +14,28 @@ class ApiService {
     return arweave.ar.winstonToAr(amount);
   };
 
+  getTxStatus = async txIds => {
+    const getAllStatus = await Promise.all(
+      txIds.map(txId => this.fetchStatus(txId))
+    );
+    return getAllStatus;
+  };
+
+  fetchStatus = async txId => {
+    const res = await fetch(`https://arweave.net/tx/${txId}/status`)
+      .then(data => data.json())
+      .catch(err => console.log(err));
+    return res;
+  };
+
   postFeed = async (feed, wallet) => {
     Object.assign(feed, {
       time: currentUnixTime(),
       type: "feed"
     });
 
-    const transaction = await arweave.createTransaction({
+    const transaction = await arweave.createTransaction(
+      {
         data: JSON.stringify(feed)
       },
       wallet
@@ -43,40 +55,41 @@ class ApiService {
       type: "comment"
     });
 
-    const transaction = await arweave.createTransaction({
+    const transaction = await arweave.createTransaction(
+      {
         data: JSON.stringify(comment)
       },
       wallet
     );
-    transaction.addTag('Transaction-Type', comment.type);
-    transaction.addTag('Time', comment.time);
-    transaction.addTag('Comment-For', feedTxId);
-    transaction.addTag('App-Name', getAppName());
+    transaction.addTag("Transaction-Type", comment.type);
+    transaction.addTag("Time", comment.time);
+    transaction.addTag("Comment-For", feedTxId);
+    transaction.addTag("App-Name", getAppName());
 
     await arweave.transactions.sign(transaction, wallet);
     const response = await arweave.transactions.post(transaction);
     return response;
-  }
+  };
 
-  getCommentByFeedId = async (txnId) => {
+  getCommentByFeedId = async txnId => {
     const query = {
-      op: 'and',
+      op: "and",
       expr1: {
-        op: 'and',
+        op: "and",
         expr1: {
-          op: 'equals',
-          expr1: 'Transaction-Type',
-          expr2: 'comment'
+          op: "equals",
+          expr1: "Transaction-Type",
+          expr2: "comment"
         },
         expr2: {
-          op: 'equals',
-          expr1: 'Comment-For',
+          op: "equals",
+          expr1: "Comment-For",
           expr2: txnId
         }
       },
       expr2: {
-        op: 'equals',
-        expr1: 'App-Name',
+        op: "equals",
+        expr1: "App-Name",
         expr2: getAppName()
       }
     };
@@ -90,25 +103,24 @@ class ApiService {
 
     const allTransactions = await Promise.all(
       transactions.map(async (transaction, id) => {
-          let transactionNew = JSON.parse(transaction.get('data', {
+        let transactionNew = JSON.parse(
+          transaction.get("data", {
             decode: true,
             string: true
-          }))
-          Object.assign(transactionNew, {
-            owner: await arweave.wallets.ownerToAddress(transaction.get('owner')),
-            txid: txids[id]
           })
+        );
+        Object.assign(transactionNew, {
+          owner: await arweave.wallets.ownerToAddress(transaction.get("owner")),
+          txid: txids[id]
+        });
 
-          return transactionNew
-        }
-
-      )
+        return transactionNew;
+      })
     );
 
     // console.log(stringifiedTransactions);
     return allTransactions;
-  }
-
+  };
 
   getAllFeeds = async () => {
     const query = {
@@ -146,10 +158,12 @@ class ApiService {
           comments: await this.getCommentByFeedId(txids[id])
         });
         Object.assign(transactionNew, {
-          tipAmount: transactionNew.tips.length === 0 ?
-            0 : transactionNew.tips
-            .map(tip => Number.parseInt(tip.amount))
-            .reduce((prev, curr) => prev + curr)
+          tipAmount:
+            transactionNew.tips.length === 0
+              ? 0
+              : transactionNew.tips
+                  .map(tip => Number.parseInt(tip.amount))
+                  .reduce((prev, curr) => prev + curr)
         });
         return transactionNew;
       })
@@ -162,9 +176,9 @@ class ApiService {
     sortFeedByTip.forEach((feed, i) => {
       Object.assign(feed, {
         rank: i + 1
-      })
-      return feed
-    })
+      });
+      return feed;
+    });
 
     // console.log(stringifiedTransactions);
     return sortFeedByTip;
@@ -214,10 +228,12 @@ class ApiService {
           comments: await this.getCommentByFeedId(txids[id])
         });
         Object.assign(transactionNew, {
-          tipAmount: transactionNew.tips.length === 0 ?
-            0 : transactionNew.tips
-            .map(tip => Number.parseInt(tip.amount))
-            .reduce((prev, curr) => prev + curr)
+          tipAmount:
+            transactionNew.tips.length === 0
+              ? 0
+              : transactionNew.tips
+                  .map(tip => Number.parseInt(tip.amount))
+                  .reduce((prev, curr) => prev + curr)
         });
         return transactionNew;
       })
@@ -230,22 +246,26 @@ class ApiService {
     sortFeedByTip.forEach((feed, i) => {
       Object.assign(feed, {
         rank: i + 1
-      })
-      return feed
-    })
+      });
+      return feed;
+    });
 
-    console.log(sortFeedByTip)
+    console.log(sortFeedByTip);
 
     // console.log(stringifiedTransactions);
     return sortFeedByTip;
   };
 
   sendTip = async (toAddress, amount, wallet, txId) => {
-    console.log(arweave.ar.arToWinston(amount) * 75 / 100, arweave.ar.arToWinston(amount) * 25 / 100)
-    const transaction = await arweave.createTransaction({
+    console.log(
+      (arweave.ar.arToWinston(amount) * 75) / 100,
+      (arweave.ar.arToWinston(amount) * 25) / 100
+    );
+    const transaction = await arweave.createTransaction(
+      {
         target: toAddress,
-        quantity: arweave.ar.arToWinston(amount * 75 / 100),
-        reward: arweave.ar.arToWinston(amount * 25 / 100),
+        quantity: arweave.ar.arToWinston((amount * 75) / 100),
+        reward: arweave.ar.arToWinston((amount * 25) / 100)
       },
       wallet
     );
@@ -331,7 +351,6 @@ class ApiService {
           txid: txids[id],
           time: blockDetails.timestamp
         };
-
 
         return transactionNew;
       })

@@ -11,6 +11,11 @@ const AppBar = props => {
     setOpenLoginModal(true);
   };
 
+  const viewFeed = txId => {
+    props.setTxId(txId);
+    props.setTab(3);
+  };
+
   return (
     <nav
       className="navbar is-light"
@@ -62,6 +67,42 @@ const AppBar = props => {
         </div>
 
         <div className="navbar-end">
+          <div className="navbar-item">
+            <div class="dropdown is-hoverable">
+              <div class="dropdown-trigger">
+                <button
+                  class="button is-light"
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu4"
+                >
+                  <span class="icon">
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                <div class="dropdown-content">
+                  {!props.notifications.length ? (
+                    <div class="dropdown-item">
+                      <p>No notification present</p>
+                    </div>
+                  ) : (
+                    props.notifications.map(notification => (
+                      <div
+                        class="dropdown-item"
+                        onClick={e => viewFeed(notification.txId)}
+                      >
+                        <a>
+                          Tx {notification.txId.substr(0, 4)}...
+                          {notification.txId.substr(-4, 4)} has been mined
+                        </a>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
           {props.wallet === null ? (
             <div className="navbar-item">
               <div className="buttons">

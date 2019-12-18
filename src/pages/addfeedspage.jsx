@@ -84,6 +84,8 @@ class AddFeedPage extends React.Component {
           closeOnClick: true,
           animate: { in: "fadeIn", out: "fadeOut" }
         });
+        console.log(JSON.parse(data.config.data));
+        this.props.addTxId(JSON.parse(data.config.data).id);
       })
       .catch(err => {
         toast({
