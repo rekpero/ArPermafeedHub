@@ -6,7 +6,7 @@
 
 ## Ar Neighbour Link
 
-- [**Permaweb**](https://arweave.net/avRy0EETH9r6axDYJpcGNYJ6j4pmXOjJKZp3fr1cTdM)
+- [**Permaweb**](https://arweave.net/ykmk26E0J48qxAlPmOOxqMNZB8C-Vs62Rfmd8DKwVds)
 - [**Github Demo**](https://mmitrasish.github.io/ArPermafeedHub/build/)
 
 ## Features
