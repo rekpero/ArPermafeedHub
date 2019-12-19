@@ -20,6 +20,7 @@
 - [x] See details of permafeeds including Statistics and ArQL/GraphQL example
 - [x] Run ArQL test query
 - [x] Comment on permafeed
+- [x] Toast & Notification when the feed is mined
 - [ ] Run GraphQL test query
 
 ## How to Publish Your Permafeed
